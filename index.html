@@ -1,0 +1,191 @@
+<!-- Jenna Weller 
+     Section 3 
+    Description: HW 6: "rolling" Yahtzee Dice and outputing # of rolls, and total count of rolls and image of dice with number entered in text box -->
+
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Yahtzee Game</title>
+        <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+        <script>
+          //declare global variables. rolls is an array
+          var rolls = [];
+          //number entered in textbox
+          var dieNum;
+          //counter
+          var i;
+          //this class countains attribut of output that is called with new diceOutput to create a string for the output that gives # of rolls
+          class diceOutput {
+            output;
+          }
+          //this function is called by the click me button
+          function rollTheDie() {
+            //this goes and gets the number entered to roll
+           clearPTags (); 
+            dieNum = parseInt(document.getElementById("number").value);
+            //it checks if the number entered in text box is between 1 and 6
+            if (dieNum >= 1 && dieNum <= 6) {
+              //this for loop runs for 5 times
+              for (i = 0; i < 5; ) {
+                //calls the main function that generates random numbers
+                rollTheDieAgain();
+                /*calls function that chooses which output for dice "1, 2, 3 etc" rolls = " " and has parameter values that are passed to the function
+                     including the number of rolls and the counter "i" */
+                whichDiceOutput(i, rolls);
+                /* this function is called - it changes the ptag for total # of rolls  */
+    
+                totalNumRolls(rolls);
+    
+                i++;
+                
+              }
+             
+            }
+            //if the number entered in text box was not between 1 and 6, alert an error and re-focus to the text box
+            else {
+            
+              alert("Please input a number between 1 and 6");
+              document.getElementByTagName("number").focus();
+            }
+          }
+    
+    function clearPTags ()
+    {
+      document.getElementsByTagName("P").innerHTML = " ";
+    }
+          /*this function creates a random number that is the roll value */
+    
+          function rollTheDieAgain() {
+            //declare variable for random number
+            var rollDieNum = 0;
+            //create random number to signify what number has just been rolled
+            rollDieNum = Math.floor(Math.random() * 6) + 1;
+            //since there was one roll to begin with start the roll counter at 1
+            var rollCounter = 1;
+            // while the number rolled is not equal to the number wanted for yahtzee, keep rolling until you get that same number , and keep track of the rolls
+            while (rollDieNum !== dieNum) {
+              rollDieNum = Math.floor(Math.random() * 6 + 1);
+              rollCounter++;
+            }
+            //this adds the number of rolls to an array to track how many rolls there were for each specific dice that was rolled
+            rolls.push(rollCounter);
+            //when the number rolled is finally the same number as wanted for yahtzee call the function that chooses an image
+            if (rollDieNum == dieNum) {
+              whichImage(dieNum);
+            }
+          }
+    
+          //this function has a parameter to receive the i count value to know which dice was rolled, and parameter for number of times rolled
+    
+          function whichDiceOutput(functionCounter, numRolls) {
+            //uses a switch function to test which dice number it is, depending on if it makes the case true, it changes the innerHTML of that dice's specific p tag
+            switch (functionCounter) {
+              case 0:
+                document.getElementById("output1").innerHTML = "Dice 1 Rolls = " + numRolls[0];
+                break;
+    
+              case 1:
+                document.getElementById("output2").innerHTML = "Dice 2 Rolls = " + numRolls[1];
+                break;
+              case 2:
+                document.getElementById("output3").innerHTML = "Dice 3 Rolls = " + numRolls[2];
+                break;
+              case 3:
+                document.getElementById("output4").innerHTML = "Dice 4 Rolls = " + numRolls[3];
+                break;
+              case 4:
+                document.getElementById("output5").innerHTML = "Dice 5 Rolls = " + numRolls[4];
+                break;
+            }
+          }
+    
+          //function that chooses which image will be displayed depending on what number is entered in the textbox, it has a parameter to receive the yahtzee number
+          function whichImage(imageDieNum) {
+            //5 image tags for the dice
+            switch (imageDieNum) {
+              case 1:
+                document.getElementById("output").innerHTML += "  <img src= images/dice1Use.jpg >  ";
+                break;
+              case 2:
+                document.getElementById("output").innerHTML += "  <img src= images/dice2Use.jpg >  "  ;
+                break;
+              case 3:
+                document.getElementById("output").innerHTML += "  <img src = images/dice3Use.jpg >  ";
+                break;
+              case 4:
+                document.getElementById("output").innerHTML += "  <img src = images/dice4Use.jpg>  ";
+                break;
+              case 5:
+                document.getElementById("output").innerHTML += "  <img src = images/dice5Use.jpg >  ";
+                break;
+              case 6:
+                document.getElementById("output").innerHTML += "  <img src = images/dice6Use.jpg>  ";
+                break;
+            }
+          }
+          //this function has a parameter to receive the rolls array. it adds up all the rolls to get total rolls and changes the ptag for that output
+          function totalNumRolls(rollNum) {
+            document.getElementById("output6").innerHTML = "Total # of rolls = " + parseInt(rollNum[0] + rollNum[1] + rollNum[2] + rollNum[3] + rollNum[4]);
+          }
+        </script>
+      </head>
+      <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+          <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">Yahtzee</a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+              Menu<i class="fas fa-bars"></i>
+            </button>
+          </div>
+        </nav>
+        <!-- Masthead-->
+        <header class="masthead">
+          <div class="container d-flex h-100 align-items-center">
+            <div class="mx-auto text-center">
+              <h1 class="mx-auto my-0 text-uppercase">Yahtzee</h1>
+              <!-- html label "What number do you want for Yahtzee?" and html input of text for getting the number-->
+              <label for="number"> What number do you want for Yahtzee?:</label>
+              <!--html button for Click me-->
+              <input type="text" id="number" name="dienumber" autofocus />
+              <br />
+              <br />
+    
+              <h2 class="text-white-50 mx-auto mt-2 mb-5"></h2>
+              <!-- html P tag for each of the dice roll counts -->
+              <p id="output"></p>
+              <p id="output1"></p>
+              <p id="output2"></p>
+              <p id="output3"></p>
+              <p id="output4"></p>
+              <p id="output5"></p>
+              <!--  html P tag for the total number of roll counts -->
+              <p id="output6"></p>
+    
+              <a class="btn btn-primary js-scroll-trigger" href="#about" input type="button" id="clickme" onclick="rollTheDie()">Click Me</a>
+            </div>
+          </div>
+        </header>
+    
+        <!-- Footer-->
+        <footer class="footer bg-black small text-center text-white-50"><div class="container">Copyright © Jenna Weller Homework 6. 2020</div></footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+        <!-- Third party plugin JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+      </body>
+    </html>
